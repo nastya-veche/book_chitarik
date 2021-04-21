@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+  <div id="myCarousel" class="carousel slide" data-ride="carousel">
+    <!-- Indicators -->
+    <ol class="carousel-indicators">
+      <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+      {% for item in advertisement[1:] %}
+      <li data-target="#myCarousel" data-slide-to="{{loop.index}}"></li>
+      {% endfor %}
+    </ol>
+    <!-- Wrapper for slides -->
+    <div class="carousel-inner">
+      <div class="item active">
+        <img src="/static/img/news/pict0.jpg" alt="Los Angeles" style="width:100%;">
+      </div>
+      {% for item in advertisement[1:] %}
+      <div class="item">
+        <img src="/static/img/news/{{item}}" alt="Chicago" style="width:100%;">
+      </div>
+      {% endfor %}
+    </div>
+    <!-- Left and right controls -->
+    <a class="left carousel-control" href="#myCarousel" data-slide="prev">
+      <span class="glyphicon glyphicon-chevron-left"></span>
+      <span class="sr-only">Previous</span>
+    </a>
+    <a class="right carousel-control" href="#myCarousel" data-slide="next">
+      <span class="glyphicon glyphicon-chevron-right"></span>
+      <span class="sr-only">Next</span>
+    </a>
+  </div>
+</div>
+<style type="text/css">
+h1{
+	color: rgb(255, 255, 255);
+	margin: 20px auto 0;
+	width: 200px;
+	text-align: center;
+}
+{% for book in books_list %}
+    #col{{loop.index}}
+    {
+     width: 220px; /* Ширина колонок */
+    padding: 5px; /* Поля вокруг текста */
+    margin-left: 50px; /* Отступ слева */
+    margin-top: 20px; /* Отступ сверху */
+    float: left; /* Состыковка колонок по горизонтали */
+    border: 1px solid black; /* Рамка вокруг слоя */
+    font-family: Verdana, Arial, sans-serif; /* Рубленый шрифт */
+    font-weight: bold; /* Жирное начертание текста заголовка */
+    font-size: 80%; /* Размер шрифта */
+    color: white; /* Цвет текста заголовка */
+    border-radius: 10px;
+    position: relative; /* Относительное позиционирование */
+    top: 0.3em; /* Сдвигаем вниз */
+   }
+   #col{{loop.index}}
+   {
+    font-family: "TEMPUS SANS ITC", Times, serif; /* Шрифт с засечками */
+    font-size: 150%; /* Размер шрифта */
+    font-weight: bold; /* Нормальное начертание */
+    color: black; /* Цвет текста */
+    text-align: center;
+   }
+   #col{{loop.index}} { background: #EBE0C5; }
+ {% endfor %}
+
+   .container {
+     clear: both;  /* Отменяет действие float */
+   }
+</style>
+<h1>{{title}}</h1>
+<div class="container">
+    {% for book in books_list %}
+    <div id="col{{loop.index}}">
+        {{book.title[:16]}}...<br/>
+		<img src="/static/img/{{book.cover_art}}" width="120" height="150"><br/>
+        {{book.author}}<br/>
+        <a class="btn btn-success " href="/book/{{book.id}}">Открыть</a>
+	</div>
+    {% endfor %}
+  </div>
+{% endblock %}

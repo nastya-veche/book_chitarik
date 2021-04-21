@@ -1,0 +1,87 @@
+{% extends "base.html" %}
+
+{% block content %}
+<style type="text/css">
+h1{
+	color: rgb(255, 255, 255);
+	margin: 20px auto 0;
+	width: 200px;
+	text-align: center;
+}
+    #col1
+    {
+     width: 1000px; /* Ширина колонок */
+    padding: 50px; /* Поля вокруг текста */
+    margin-left: 50px; /* Отступ слева */
+    margin-top: 20px; /* Отступ сверху */
+    float: left; /* Состыковка колонок по горизонтали */
+    border: 1px solid black; /* Рамка вокруг слоя */
+    font-family: Verdana, Arial, sans-serif; /* Рубленый шрифт */
+    font-weight: bold; /* Жирное начертание текста заголовка */
+    font-size: 50pt; /* Размер шрифта */
+    color: white; /* Цвет текста заголовка */
+    border-radius: 10px;
+    position: relative; /* Относительное позиционирование */
+    top: 0.3em; /* Сдвигаем вниз */
+   }
+   #col1
+   {
+    font-family: "TEMPUS SANS ITC", Times, serif; /* Шрифт с засечками */
+    font-size: 50pt; /* Размер шрифта */
+    font-weight: bold; /* Нормальное начертание */
+    color: black; /* Цвет текста */
+
+   }
+   #col1{ background: #EBE0C5; }
+   .container {
+     clear: both;  /* Отменяет действие float */
+   }
+   #bt3 {
+    background-color: #E91E63;
+    font-size: 15pt;
+    color: white;
+    padding: 15px 30px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    float: left;
+}
+
+#bt3:hover {
+    background-color: #C2185B;
+}
+</style>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<div class="container">
+    <div id="col1">
+        {% if current_user.is_authenticated %}
+        <a href="/conservation/{{book.id}}"><span class="glyphicon glyphicon-paperclip" style="font-size: 20pt; float: right;" ></span></a>
+        {% endif %}  
+		<img src="/static/img/{{book.cover_art}}" align="left">{{book.title}}<br/>{{book.author}}<br/>
+        <h2>Возрастное ограничение: {{book.age_limit}}+</h2>
+        <h2>Жанр: {{title_genre}}</h2>
+        <h2 style="font-size: 45px; font-weight:bold">Аннотация</h2>
+        <h2 align="left">{{book.annotation}}</h2>
+        <br/>
+        <h2 style="font-size: 45px; font-weight:bold">Отзывы</h2>
+        {% for comment in comments %}
+        <h2 style="font-size: 30px; font-weight:bold;" align="left">Тема: {{comment.subject}}</h2>
+        <h2 style="font-size: 30px; font-weight:bold;" align="left">Автор отзыва: {{comment.user.nickname}}</h2>
+        <h2 align="left">{{comment.text}}</h2>
+        <a href="/like/{{comment.id}}/{{book.id}}"><span class="glyphicon glyphicon-thumbs-up" style="font-size: 20pt;">{{comment.like}}</span></a>
+        <a href="/dislike/{{comment.id}}/{{book.id}}"><span class="glyphicon glyphicon-thumbs-down" style="font-size: 20pt;">{{comment.dislike}}</span></a>
+        <br/>
+        {% endfor %}
+        {% if current_user.is_authenticated %}
+        <form action="" method="post">
+            {{ form.hidden_tag() }}
+            {{ form.subject.label(style="font-size: 15pt;", align="left") }}
+            {{ form.subject(class="form-control", style="width: 500px;") }}
+            {{ form.text.label(style="font-size: 15pt;", align="left") }}
+            {{ form.text(class="form-control", rows="5") }} <br/>
+        <p>{{ form.submit(type="submit", class="btn", id="bt3") }}</p>
+            {% endif %}
+</form>
+	</div>
+  </div>
+{% endblock %}

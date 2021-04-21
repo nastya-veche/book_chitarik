@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Читарик</title>
+</head>
+<body>
+<style type="text/css">
+        body {
+  background: url('video.png');
+  background-size: cover;
+}
+
+.bgvideo {
+  position: fixed;
+  right: 0;
+  bottom: 0;
+  min-width: 100%;
+  min-height: 100%;
+  width: auto;
+  height: auto;
+  z-index: -9999;
+}
+    </style>
+    <video autoplay loop muted class="bgvideo" id="bgvideo">
+   <source src="static/video/video{{num}}.mp4" type="video/mp4">Видео</source>
+  </video>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- Add icon library -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<style type="text/css">
+    @import url(https://fonts.googleapis.com/css?family=Open+Sans:400,700);
+@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.2.0/css/font-awesome.min.css');
+
+*{
+	font-family: 'Open Sans', 'sans-serif', 'FontAwesome';
+}
+body{
+    background: rgb(52, 56, 61);
+	padding: 80px;
+}
+h1{
+	color: rgb(255, 255, 255);
+	margin: 20px auto 0;
+	width: 50px;
+	text-align: center;
+}
+h2{
+	color: #FF0000;
+	margin: 20px auto 0;
+	width: 200px;
+	text-align: center;
+}
+#col1
+    {
+     width: 1000px; /* Ширина колонок */
+    padding: 30px; /* Поля вокруг текста */
+    margin-left: 50px; /* Отступ слева */
+    margin-top: 20px; /* Отступ сверху */
+    float: left; /* Состыковка колонок по горизонтали */
+    border: 1px solid black; /* Рамка вокруг слоя */
+    font-family: Verdana, Arial, sans-serif; /* Рубленый шрифт */
+    font-weight: bold; /* Жирное начертание текста заголовка */
+    font-size: 50pt; /* Размер шрифта */
+    color: white; /* Цвет текста заголовка */
+    border-radius: 10px;
+    position: relative; /* Относительное позиционирование */
+    top: 0.3em; /* Сдвигаем вниз */
+   }
+   #col1
+   {
+    font-family: "TEMPUS SANS ITC", Times, serif; /* Шрифт с засечками */
+    font-size: 10pt; /* Размер шрифта */
+    font-weight: bold; /* Нормальное начертание */
+
+   }
+   #col1{ background: #EBE0C5; }
+   .container {
+     clear: both;  /* Отменяет действие float */
+   }
+   #col1{
+	position: absolute;
+	width: 320px;
+	left: 50%;
+	margin-left: -160px;
+	top: 50%;
+	margin-top: -75px;
+}
+
+/* === Sign in Form === */
+#signin {
+	height: 230px;
+	width: 300px;
+	border-radius: 8px;
+	position: relative;
+}
+#user, #pass{
+	border-top-right-radius: 8px;
+	border-top-left-radius: 8px;
+	border-bottom-right-radius: 8px;
+	border-bottom-left-radius: 8px;
+	}
+#user, #pass, #submit{
+	background: rgb(28, 30, 33);
+	box-shadow: inset -100px -100px 0 rgb(28, 30, 33); /*Prevent yellow autofill color*/
+	color: rgb(52, 56, 61);
+}
+#user, #pass{
+	position: relative;
+	display: block;
+	width: 280px;
+	height: 45px;
+	border: 0;
+	outline: 0;
+	top: -2px;
+	padding: 0 0 0 20px;
+	font-weight: 700;
+}
+#user:focus, #pass:focus{
+	color: rgb(255, 255, 255);
+}
+#submit{
+content: "\f007";
+	display: block;
+	position: absolute;
+	width: 52px;
+	height: 52px;
+	color: rgb(52, 56, 61);
+	border-radius: 50px;
+	outline: 0;
+	z-index: 2;
+	right: 122px;
+	border: 6px solid rgb(52, 56, 61);
+	font-size: 25px;
+	text-indent: 0px;
+	padding-left: 9px;
+	padding-bottom: 3px;
+	text-align: center;
+}
+#submit:hover{
+	color: rgb(0, 126, 165);
+	text-shadow: 0 0 10px rgb(0, 126, 165);
+	cursor: pointer;
+}
+#signin p {
+	color: rgb(79, 85, 97);
+	padding: 0 20px;
+	font-weight: 700;
+	font-size: 12px;
+	margin: 5px 0 0 0;
+}
+#signin p > a{
+	color: rgb(111, 119, 135);
+	text-decoration: none;
+}
+#signin p > a:hover{
+	border-bottom: 1px solid;
+}
+</style>
+<div class="container">
+<div id="col1">
+    <h2>{{title}}</h2>
+	<form id="signin" action="" method="post">
+        {{ form.hidden_tag() }}
+        <h2>Введите ник</h2>
+        {{ form.nickname(class="form-control", id="user", type="name") }}
+        <h2>Ведите пароль</h2>
+        {{ form.password(class="form-control", id="pass", type="password") }}
+        <br/>
+        <button {{ form.submit(type="submit", id="submit", class="fa fa-user") }}</button>
+        <h2>{{message}}</h2>
+	</form>
+</div>
+    </div>
+</body>
+</html>

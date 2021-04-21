@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en">
+<head>
+     <link rel="shortcut icon" href="/static/img/ikon.png" type="image/png">
+    <meta charset="utf-8">
+    <style>
+    </style>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>{{name}}</title>
+</head>
+<body>
+<header>
+        <style type="text/css">
+        body {
+
+  background-size: cover;
+}
+
+.bgvideo {
+  position: fixed;
+  right: 0;
+  bottom: 0;
+  min-width: 100%;
+  min-height: 100%;
+  width: auto;
+  height: auto;
+  z-index: -9999;
+}
+    </style>
+    <video autoplay loop muted class="bgvideo" id="bgvideo">
+   <source src="/static/video/video{{num}}.mp4" type="video/mp4">Видео</source>
+  </video>
+</div>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<div class="navbar navbar-inverse">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="navbar-collapse collapse" id="mobile_menu">
+                        <ul class="nav navbar-nav">
+                            <li><a href="/"><span class="glyphicon glyphicon-home" style="font-size: 20pt;"></span></a></li>
+                            <li><a href="#" class="dropdown-toggle" data-toggle="dropdown" style="font-size: 20pt;">Жанры<span class="caret"></span></a>
+                                <ul class="dropdown-menu">
+                                    {% for genre in genres_list %}
+                                    <li><a href="/books/{{genre.id}}">{{genre.title}}</a></li>
+                                    {% endfor %}
+                                </ul>
+                            </li>
+                        </ul>
+                        <ul class="nav navbar-nav">
+                            <li>
+                                <form action="" class="navbar-form">
+                                    <input type="text" name="type" id="type" onChange='$("#chk").attr("href","/find/"+$(this).val());'>
+                                    <a id='chk' href="/find/"><span class="glyphicon glyphicon-search" style=""></span></a>
+                                </form>
+                            </li>
+                        </ul>
+
+                        <ul class="nav navbar-nav navbar-right">
+                            {% if current_user.is_authenticated %}
+                            <li><a href="/profile"><span class="glyphicon glyphicon-user" style="font-size: 20pt;"></span></a></li>
+                            <li><a href="/logout"><span class="glyphicon glyphicon-log-in" style="font-size: 20pt;"></span><span class="navbar-brand"></span></a></li>
+                            {% else %}
+                            <li><a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-log-in" style="font-size: 20pt;"></span><span class="caret"></span></a>
+                                <ul class="dropdown-menu">
+                                    <li><a href="/login">Войти</a></li>
+                                    <li><a href="/register">Зарегистрироваться</a></li>
+                                </ul>
+                            </li>
+                            {% endif %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</header>
+<!-- Begin page content -->
+<main role="main" class="container">
+    {% block content %}{% endblock %}
+</main>
+</body>
+</html>
