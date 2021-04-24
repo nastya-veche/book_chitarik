@@ -1,15 +1,13 @@
 from flask import Flask, render_template, redirect, request
 from forms.user_form import LoginForm, RegisterForm
 from forms.comment_form import CommentForm
-from data import db_session, users_api, books_api, comments_api, genres_api
+from data import db_session
 from flask_login import LoginManager, login_user, login_required, logout_user, current_user
 from data.db_session import create_session, global_init
 from data.users import User
 from data.books import Book
 from data.comments import Comment
 from data.genres import Genre
-from requests import get, post, delete, put
-from werkzeug.security import generate_password_hash
 import os
 
 
@@ -18,10 +16,6 @@ app.config['SECRET_KEY'] = 'yandexlyceum_secret_key'
 login_manager = LoginManager()
 login_manager.init_app(app)
 db_session.global_init("db/book_store.db")
-app.register_blueprint(users_api.blueprint)
-app.register_blueprint(books_api.blueprint)
-app.register_blueprint(comments_api.blueprint)
-app.register_blueprint(genres_api.blueprint)
 
 
 @login_manager.user_loader
@@ -142,6 +136,48 @@ def book_window(book_id):
                            comments=comments, form=form, num=3, name=book.title, title_genre=title_genre)
 
 
+@app.route('/del_book/<int:book_id>', methods=['GET', 'POST'])
+def del_book(book_id):
+    db_sess = db_session.create_session()
+    book = db_sess.query(Book).get(book_id)
+    db_sess.delete(book)
+    db_sess.commit()
+    return redirect(f'/')
+
+
+@app.route('/create_book', methods=['GET', 'POST'])
+def create_book():
+    if request.method == 'GET':
+        db_sess = db_session.create_session()
+        genres = db_sess.query(Genre).all()
+        return render_template('creat_book.html', genre_list=genres)
+    db_sess = db_session.create_session()
+    if request.form['genreother']:
+        new_genre = request.form['genreother']
+        db_sess = db_session.create_session()
+        genre = Genre(
+            title=request.form['genreother']
+        )
+        db_sess.add(genre)
+        db_sess.commit()
+        db_sess = db_session.create_session()
+        genre_oth = db_sess.query(Genre).filter(Genre.title == new_genre).first().id
+    else:
+        genre_oth = request.form['genre']
+    book = Book(
+        title=request.form['title'],
+        author=request.form['author'],
+        age_limit=request.form['age_limit'],
+        annotation=request.form['annotation'],
+        cover_art=request.form['cover_art'],
+        genre_id=genre_oth,
+        reviews=''
+    )
+    db_sess.add(book)
+    db_sess.commit()
+    return redirect(f'/')
+
+
 @app.route('/like/<int:comment_id>/<int:book_id>')
 def add_like(comment_id, book_id):
     db_sess = create_session()
@@ -204,11 +240,5 @@ def profile():
                            books_list=books, title=f'Сохраненные книги', num=5, name='Профиль')
 
 
-#if __name__ == '__main__':
-    #app.run(port=8080, host='127.0.0.1')
-    #app.run()
-
-
 if __name__ == '__main__':
-    port = int(os.environ.get("PORT", 5000))
-    app.run(host='0.0.0.0', port=port)
+    app.run()

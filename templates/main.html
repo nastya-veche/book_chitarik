@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 
 {% block content %}
+{% if current_user.id != 1 %}
 <div class="container">
   <div id="myCarousel" class="carousel slide" data-ride="carousel">
     <!-- Indicators -->
@@ -32,6 +33,9 @@
     </a>
   </div>
 </div>
+{% else %}
+<a class="btn btn-primary btn-lg" href="/create_book">Добавить книгу</a>
+{% endif %}
 <style type="text/css">
 h1{
 	color: rgb(255, 255, 255);
@@ -79,6 +83,9 @@ h1{
 		<img src="/static/img/{{book.cover_art}}" width="120" height="150"><br/>
         {{book.author}}<br/>
         <a class="btn btn-success " href="/book/{{book.id}}">Открыть</a>
+      {% if current_user.id == 1 %}
+      <a class="btn btn-danger" href="/del_book/{{book.id}}">Удалить</a>
+      {% endif %}
 	</div>
     {% endfor %}
   </div>
